@@ -11,6 +11,18 @@
 
 ---
 
+## 🌐 Live Preview
+
+<p align="center">
+  <a href="https://vadherrohit.gamer.gd/" target="_blank">
+    <img src="https://img.shields.io/badge/🚀%20Open%20Live%20Project-Click%20Here-blue?style=for-the-badge" />
+  </a>
+</p>
+
+🔗 **Live URL:** https://vadherrohit.gamer.gd/
+
+---
+
 ## 📌 Project Overview
 
 The **Laundry Management System** is a robust, web-based solution designed to automate the daily operations of a laundry business. From tracking incoming garments to generating professional invoices, this system ensures a seamless workflow for both staff and customers.
@@ -85,12 +97,19 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 **Rohit** *BCA Student*
 
-<p align="left">
+📫 Connect With Me
+
+<p align="center">
   <a href="mailto:vadherrohit239@gmail.com">
-    <img src="https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white" />
+    <img src="https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail&logoColor=white" />
   </a>
-  <a href="https://github.com/rohit-dev-2007">
-    <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" />
+
+  <a href="https://github.com/rohitdevx-2007">
+    <img src="https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github" />
+  </a>
+
+  <a href="https://instagram.com/rohit.devx">
+    <img src="https://img.shields.io/badge/Instagram-Follow-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
   </a>
 </p>
 
