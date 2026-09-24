@@ -1,111 +1,72 @@
 <?php
-require_once 'config/db.php';
-
-if (isset($_SESSION['user_id'])) {
-    header("Location: pages/dashboard.php");
-    exit();
+declare(strict_types=1);
+require_once __DIR__ . '/backend/bootstrap.php';
+if (lms_user()) {
+    header('Location: pages/dashboard.php');
+    exit;
 }
-
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-
-    if (!empty($username) && !empty($password)) {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && $password == $user['password']) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['full_name'];
-            $_SESSION['role'] = $user['role'];
-            header("Location: pages/dashboard.php");
-            exit();
-        } else {
-            $error = "Invalid username or password.";
-        }
-    } else {
-        $error = "Please fill in all fields.";
-    }
-}
+$expired = isset($_GET['expired']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Laundry Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify_content: center;
-        }
-        .login-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .login-header h2 {
-            color: #333;
-            font-weight: 700;
-        }
-        .btn-primary {
-            background: #667eea;
-            border: none;
-            padding: 10px;
-        }
-        .btn-primary:hover {
-            background: #764ba2;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in â€” Laundry MS</title>
+<link rel="icon" href="icons/web/favicon.ico" sizes="any">
+<link rel="stylesheet" href="assets/css/variables.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/forms.css">
 </head>
 <body>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-            <div class="login-card">
-                <div class="login-header">
-                    <h2>Welcome Back</h2>
-                    <p class="text-muted">Login to your account</p>
-                </div>
-                <?php if($error): ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
-                <?php endif; ?>
-                <form method="POST" action="">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </div>
-                </form>
-                <div class="text-center mt-3">
-                    <small class="text-muted">Default: admin / admin123</small>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="login-wrap">
+<div class="login-card">
+<div class="logo"><img src="icons/web/icon-192.png" alt="Laundry MS"><div><h2 style="margin:0">Laundry MS</h2><small style="color:var(--muted)">Sign in to continue</small></div></div>
+<?php if ($expired): ?>
+<div class="alert warning">Session expired. Please sign in again.</div>
+<?php endif; ?>
+<div class="alert error" id="errBox" style="display:none"></div>
+<form id="loginForm">
+<div class="field"><label for="username">Username</label><input class="input" id="username" name="username" autocomplete="username" maxlength="50" required autofocus></div>
+<div class="field" style="position:relative"><label for="password">Password</label><input class="input" type="password" id="password" name="password" autocomplete="current-password" required style="padding-right:3.4rem"><button type="button" id="pwToggle" aria-label="Show password" style="position:absolute;right:6px;bottom:6px;border:none;background:none;color:var(--primary);cursor:pointer;font-size:0.82rem;font-weight:600;padding:0.35rem 0.4rem">Show</button></div>
+<button class="btn primary" id="loginBtn" style="width:100%">Sign in</button>
+</form>
 </div>
-
+</div>
+<script>
+const pwField = document.getElementById("password");
+const pwToggle = document.getElementById("pwToggle");
+pwToggle.addEventListener("click", () => {
+  const show = pwField.type === "password";
+  pwField.type = show ? "text" : "password";
+  pwToggle.textContent = show ? "Hide" : "Show";
+  pwToggle.setAttribute("aria-label", show ? "Hide password" : "Show password");
+});
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const box = document.getElementById("errBox");
+  const btn = document.getElementById("loginBtn");
+  box.style.display = "none";
+  btn.disabled = true;
+  btn.textContent = "Signing in...";
+  const fd = new FormData(e.target);
+  try {
+    const res = await fetch("api/auth.php?action=login", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+    const body = await res.json();
+    if (!res.ok || !body.success) throw new Error((body && body.message) || "Sign in failed.");
+    const next = new URLSearchParams(window.location.search).get("next");
+    const safe = next && next.charAt(0) === "/" && next.charAt(1) !== "/" ? next : "pages/dashboard.php";
+    window.location.href = safe;
+  } catch (err) {
+    box.textContent = err.message || "Sign in failed.";
+    box.style.display = "block";
+  }
+  btn.disabled = false;
+  btn.textContent = "Sign in";
+});
+</script>
 </body>
 </html>
+

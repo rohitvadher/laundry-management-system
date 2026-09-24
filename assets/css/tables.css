@@ -1,0 +1,9 @@
+﻿.tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; }
+table.data { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+table.data th { text-align: left; background: var(--bg-soft); color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+table.data td { padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.data tr:last-child td { border-bottom: none; }
+table.data tbody tr:hover { background: var(--primary-light); }
+table.data .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pager { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 0.2rem; color: var(--muted); font-size: 0.88rem; }
+

@@ -1,0 +1,15 @@
+﻿.inv { background: #fff; }
+.inv-head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.inv-brand { display: flex; gap: 0.8rem; align-items: center; }
+.inv-brand img { width: 52px; height: 52px; border-radius: 10px; border: 1px solid var(--border); }
+.inv-meta { text-align: right; }
+.inv-box { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+@media (max-width: 700px) { .inv-box { grid-template-columns: 1fr; } .inv-meta { text-align: left; } }
+.inv-totals td { font-variant-numeric: tabular-nums; }
+.foot-note { color: var(--muted); font-size: 0.85rem; margin-top: 1rem; }
+.chart { display: flex; align-items: end; gap: 6px; height: 140px; padding: 0.6rem 0.2rem; }
+.chart i { flex: 1; background: var(--primary); border-radius: 4px 4px 0 0; min-height: 4px; opacity: 0.88; }
+.chart-wrap { overflow-x: auto; }
+.profile-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 1080px) { .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+

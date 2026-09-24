@@ -1,0 +1,9 @@
+﻿@media print {
+  .sidebar, .topbar, .no-print, #toasts, .modal-back { display: none !important; }
+  body { background: #fff; }
+  .app { display: block; }
+  .main { display: block; }
+  .content { max-width: none; padding: 0; }
+  .card, .tablewrap { box-shadow: none; }
+}
+
